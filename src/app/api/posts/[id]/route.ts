@@ -1,24 +1,29 @@
 import { NextResponse } from "next/server";
-import { mockPosts, mockComments } from "@/lib/data";
+import { mockComments } from "@/lib/data";
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Destructure id safely since params is a Promise in Next.js 15
   const resolvedParams = await params;
   const id = resolvedParams.id;
   
-  const post = mockPosts.find(p => p.id === id);
+  const apiUrl = process.env.NEXT_PUBLIC_MOCK_API_URL || "https://6a50f8fbc576c846dcba1291.mockapi.io";
 
-  if (!post) {
-    return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  try {
+    const res = await fetch(`${apiUrl}/posts/${id}`, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    const post = await res.json();
+    const comments = mockComments[id] || [];
+
+    return NextResponse.json({ ...post, comments });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message || "Failed to fetch post" }, { status: 500 });
   }
-
-  const comments = mockComments[id] || [];
-
-  // Simulate network latency (e.g. 300ms) for realistic loading state demonstration
-  await new Promise(resolve => setTimeout(resolve, 300));
-
-  return NextResponse.json({ ...post, comments });
 }
