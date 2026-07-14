@@ -11,9 +11,9 @@ You can access and interact with the live deployed version of the application he
 
 ---
 
-## 🔗 Project Links & Submission Details
+## 🔗 Project Links
 
-As part of the submission guidelines, here are the links to the deployed application and source repository:
+Here are the links to the deployed application and source repository:
 
 *   **Live Deployed Application:** [https://oronium-blog.vercel.app](https://oronium-blog.vercel.app)
 *   **GitHub Repository:** [https://github.com/Anson2006/oronium-blog](https://github.com/Anson2006/oronium-blog)
@@ -42,6 +42,64 @@ As part of the submission guidelines, here are the links to the deployed applica
 5.  **Dynamic SEO & Metadata**:
     *   Custom dynamic metadata configurations for optimal search engine indexing.
     *   Open Graph social card previews.
+
+---
+
+## 🏗️ Project Structure
+
+The project codebase follows standard Next.js directory and architecture guidelines:
+
+```
+├── public/                 # Static assets, logos, and illustrations
+├── src/
+│   ├── app/                # Next.js App Router (Layouts, routes, and page setups)
+│   │   ├── api/            # Serverless API endpoints for fetching posts
+│   │   ├── posts/[id]/     # Dynamic SSR Route for individual blog details
+│   │   ├── globals.css     # Global stylesheets and Tailwind CSS v4 variables
+│   │   └── layout.tsx      # Main application skeleton, font loaders, and footer/navbar wrappers
+│   ├── components/         # Reusable client and server React components
+│   │   ├── BlogCard.tsx    # Card layout representing a blog entry
+│   │   ├── BlogGrid.tsx    # Grid controller managing lists of BlogCard
+│   │   ├── Footer.tsx      # Premium glassmorphic footer
+│   │   ├── Hero.tsx        # Styled intro section with Framer Motion animations
+│   │   ├── HomeClient.tsx  # Dynamic search, category tags, and pagination manager
+│   │   ├── Navbar.tsx      # Sticky visual headers and active route controllers
+│   │   ├── PostClient.tsx  # Custom detailed layout with comments, ratings, and related posts
+│   │   └── Providers.tsx   # React Query configurations (QueryClientProvider wrapper)
+│   └── lib/                # Shared utilities, fallback mock datasets, and type definitions
+│       ├── data.ts         # Sample/fallback blog posts, categories, and sample comments
+│       └── types.ts        # TypeScript declarations for posts, comments, and ratings
+├── .env.local              # Local environment file (API URL endpoint configuration)
+├── eslint.config.mjs       # Linting configurations
+├── next.config.ts          # Next.js application parameters
+├── package.json            # Scripts, project metadata, and dependencies config
+├── postcss.config.mjs      # PostCSS processor setup
+├── tsconfig.json           # Compiler rules for TypeScript compilation
+```
+
+---
+
+## 🧩 Main Components
+
+The application divides UI and interactions into high-fidelity modular React components:
+
+*   **`HomeClient`**: Serves as the central interactive component for the homepage. It controls the real-time search query, active category tag filters, and pagination states (transitioning page lists gracefully).
+*   **`PostClient`**: The dynamic controller for individual blog posts. It showcases the full article body, lists similar articles inside a **Related Posts** grid, and implements client-side state for:
+    *   *Star Rating System*: Submitting and displaying personal reading reviews.
+    *   *Comments Drawer*: Adding comments dynamically, with localized like functionality.
+    *   *Bookmarking & Sharing*: Bookmarking local posts and copying deep links for easy sharing.
+*   **`BlogGrid` & `BlogCard`**: Design elements featuring hover gradients, scale interactions, and tag indicators (using Lucide icons).
+*   **`Hero`**: Premium typographic and graphic header utilizing staggered Framer Motion entrance animations for visual appeal.
+*   **`Navbar` & `Footer`**: Standard headers and footers wrapping pages in a modern dark-mode aesthetic with glow borders.
+
+---
+
+## 💎 Key Highlights
+
+*   **Hybrid Rendering Architecture**: Leverages React Server Components (RSC) for initial page loading speed (SSR), coupled with TanStack React Query for instantaneous client-side operations (caching, query updates).
+*   **Resilient Fallback Design**: Integrates with a remote API hosted on `mockapi.io`. If the API limits are exceeded or the network falls offline, the application instantly fallbacks to local mock data inside `src/lib/data.ts` to keep the site 100% operational.
+*   **Responsive & Smooth UX**: Built with responsive layouts for mobile, tablet, and desktop viewports. Visual elements react with smooth cubic-bezier transitions, skeleton loading frames, and custom rating animations.
+*   **Tailwind CSS v4 Integration**: Leverages Tailwind CSS v4's modern features for optimized build size, custom theme settings, and cleaner stylesheet configurations.
 
 ---
 
@@ -94,16 +152,3 @@ To build the application for production:
 npm run build
 npm run start
 ```
-
----
-
-## 📝 Submission Guidelines
-
-To verify and evaluate this project:
-1.  Verify the web UI at the live URL: [https://oronium-blog.vercel.app](https://oronium-blog.vercel.app)
-2.  Review codebase organization in the [GitHub Repository](https://github.com/Anson2006/oronium-blog).
-3.  The project structure matches standard Next.js standards:
-    *   `src/app/`: Layouts, static/dynamic page routers, APIs.
-    *   `src/components/`: Client/server reusable UI elements (e.g. `Navbar`, `Footer`, `Hero`, `BlogGrid`, `PostClient`).
-    *   `src/lib/`: Fallback mock data, React Query wrappers, type definitions.
-4.  Ensure that `NEXT_PUBLIC_MOCK_API_URL` env variable is set in the hosting provider dashboard (e.g. Vercel) during redeployments.
