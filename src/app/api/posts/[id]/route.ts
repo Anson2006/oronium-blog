@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { mockComments } from "@/lib/data";
 
 export async function GET(
   request: Request,
@@ -20,9 +19,7 @@ export async function GET(
     }
 
     const post = await res.json();
-    const comments = mockComments[id] || [];
-
-    return NextResponse.json({ ...post, comments });
+    return NextResponse.json(post);
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Failed to fetch post" }, { status: 500 });
   }

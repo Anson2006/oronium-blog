@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { mockPosts, mockComments } from "@/lib/data";
 import PostClient from "@/components/PostClient";
 
 interface PageProps {
@@ -19,8 +18,7 @@ const getPost = async (id: string) => {
   } catch (error) {
     console.error(`Failed to fetch post ${id} from mock API`, error);
   }
-  // fallback to local data if mockapi fails or doesn't have it
-  return mockPosts.find((p) => p.id === id) || null;
+  return null;
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -54,7 +52,7 @@ export default async function PostPage({ params }: PageProps) {
     notFound();
   }
 
-  const comments = mockComments[resolvedParams.id] || [];
+  const comments = post.comments || [];
   const fullPost = { ...post, comments };
 
   return (
